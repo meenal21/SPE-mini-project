@@ -1,11 +1,10 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import HTMLResponse
+from pathlib import Path 
 from fastapi.middleware.cors import CORSMiddleware
 import math
 
-
-
 app = FastAPI()
-
 
 app.add_middleware(
     CORSMiddleware,
@@ -15,9 +14,13 @@ app.add_middleware(
     allow_headers=["*"],  # Allows all HTTP headers
 )
 
-@app.get("/")
-def render_as():
-    return {"result":"Just the home page!"}
+
+# Read index.html file
+@app.get("/", response_class=HTMLResponse)
+async def read_index():
+    html_path = Path(__file__).parent / "index.html"
+    return HTMLResponse(content=html_path.read_text(), status_code=200)
+
 
 @app.get("/sqrt")
 def square_root(x: float):
