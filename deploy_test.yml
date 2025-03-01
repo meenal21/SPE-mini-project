@@ -17,4 +17,13 @@
         restart_policy: always
         published_ports:
           - "5000:8000"
+    
+  rescue:
+    - name: Remove Failed Containers (if exists)
+      command: docker rm -f scientific-calc
+      ignore_errors: yes
+
+    - name: Log Failure Message
+      debug: 
+        msg: "Docker deployment failed! Check logs!"
           
