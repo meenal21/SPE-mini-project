@@ -1,0 +1,20 @@
+- name: Pull docker image and run docker 
+  hosts: local
+  become: no
+  tasks: 
+
+    - name: Pull Docker Image from registry
+      docker_image:
+        name: "meenalj21/scientific-calculator"
+        tag: latest
+        source: pull
+
+    - name: Run Docker Container
+      docker_container:
+        name: "scientific-calc"
+        image: "meenalj21/scientific-calculator:latest"
+        state: started
+        restart_policy: always
+        published_ports:
+          - "5000:8000"
+          
